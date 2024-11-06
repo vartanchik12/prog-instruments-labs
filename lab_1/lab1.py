@@ -195,12 +195,23 @@ class TennisGameDefactored3:
         Returns:
             str: The current score, including special cases for "Deuce", "Advantage", and "Win".
         """
+        # Define a list of tennis scores
+        points = ["Love", "Fifteen", "Thirty", "Forty"]
+
+        # If neither player has won a game, or the score is still close
         if self.p1 < 4 and self.p2 < 4 and self.p1 + self.p2 < 6:
-            p = ["Love", "Fifteen", "Thirty", "Forty"]
-            s = p[self.p1]
-            return s + "-All" if self.p1 == self.p2 else s + "-" + p[self.p2]
-        else:
             if self.p1 == self.p2:
-                return "Deuce"
-            s = self.p1N if self.p1 > self.p2 else self.p2N
-            return "Advantage " + s if abs(self.p1 - self.p2) == 1 else "Win for " + s
+                return f"{points[self.p1]}-All"
+            else:
+                return f"{points[self.p1]}-{points[self.p2]}"
+
+        # Handle Deuce condition (both players have 3 or more points and the score is tied)
+        if self.p1 == self.p2:
+            return "Deuce"
+
+        # Handle Advantage or Win condition
+        if abs(self.p1 - self.p2) == 1:
+            return f"Advantage {self.p1N if self.p1 > self.p2 else self.p2N}"
+
+        # If the difference in score is 2 or more, the game is won
+        return f"Win for {self.p1N if self.p1 > self.p2 else self.p2N}"
